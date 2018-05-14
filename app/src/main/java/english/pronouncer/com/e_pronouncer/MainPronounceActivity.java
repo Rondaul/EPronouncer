@@ -1,11 +1,14 @@
 package english.pronouncer.com.e_pronouncer;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.taishi.library.Indicator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,11 +24,16 @@ public class MainPronounceActivity extends AppCompatActivity {
     ImageButton mNextButton;
     @BindView(R.id.main_tv_current_text_number)
     TextView mCurrentPositionTextView;
+    @BindView(R.id.player)
+    FloatingActionButton mPlayerActionButton;
+    @BindView(R.id.audio_indicator)
+    Indicator mAudioIndicator;
 
     private TextViewPagerAdapter mTextViewPagerAdapter;
 
     private int mCurrentTextPosition = 0;
     private int mCurrentPosition;
+    private boolean isPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +65,25 @@ public class MainPronounceActivity extends AppCompatActivity {
                     mCurrentPositionTextView.setText(String.format("%d", mCurrentPosition));
                     mTextSlideViewPager.setCurrentItem(mCurrentPosition);
                 }
+            }
+        });
+
+        mPlayerActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPressed) {
+                    isPressed = false;
+                } else {
+                    isPressed = true;
+                }
+                    if(isPressed) {
+                    mAudioIndicator.setVisibility(View.VISIBLE);
+                        mPlayerActionButton.setImageResource(R.drawable.pause);
+                    } else {
+                        mAudioIndicator.setVisibility(View.INVISIBLE);
+                        mPlayerActionButton.setImageResource(R.drawable.play);
+                    }
+
             }
         });
     }
